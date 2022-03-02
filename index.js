@@ -3,14 +3,6 @@ const app = express();
 
 const usuarios = ["Juan", "Jocelyn", "Astrid", "Maria", "Ignacia", "Javier", "Brian"];
 //console.log(usuarios);
-const numAleatorio = numRandom(1, 5);
-console.log(numAleatorio);
-
-//numero aleatorio
-function numRandom(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-//console.log(numRandom(1, 5));
 
 
 app.use(express.json());
@@ -28,12 +20,14 @@ const validarUser = (req, res, next) => {
 
 //middleware para número conejo
 const validarNum = (req, res, next) => {
+    function numRandom(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    const numAleatorio = numRandom(1, 5);
     const { n } = req.params;
-    const index = numAleatorio.findIndex((index) => item === n);
-    console.log(index)
-    
-    if (index === n) return res.redirect('/conejo')
-    else return res.redirect('/voldemor')
+    console.log(n)
+    console.log(numAleatorio)
+    if (n != numAleatorio) return res.redirect('/voldemor')
     next();
 }
 
@@ -42,7 +36,7 @@ app.get("/abracadabra/juego/:usuario", validarUser, (req, res) => {
 });
 
 app.get('/abracadabra/conejo/:n', validarNum, (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/assets/conejito.jpg');
 });
 
 app.get('/abracadabra/usuarios', (req, res) => {
@@ -52,10 +46,6 @@ app.get('/abracadabra/usuarios', (req, res) => {
 
 app.get('/who', (req, res) => {
     res.sendFile(__dirname + '/public/assets/who.jpeg');
-});
-
-app.get('/conejo', (req, res) => {
-    res.sendFile(__dirname + '/public/assets/conejito.jpg');
 });
 
 app.get('/voldemor', (req, res) => {
